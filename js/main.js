@@ -1,32 +1,15 @@
 //имя_функции(от, до);
 // Результат: целое число из диапазона "от...до"
-function getRandomInteger (min, max) {
+function getRandomInteger(min, max) {
   if(max > min && min >= 0){
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
   return false;
 }
-getRandomInteger(5,10);
-
 
 //имя_функции(от, до, количество_знаков_после_запятой);
 // Результат: число с плавающей точкой из диапазона "от...до" с указанным "количеством знаков после запятой"
-
-function getRandomFractionalNumber(min, max, numberSymbols ) {
-  if(max > min && min >= 0 && numberSymbols >= 0){
-    const randomNumber = (Math.random() * (max - min +1)) + min;  //случайное дробное в диапазоне [min, max)
-    const multiplier = Math.pow(10, numberSymbols); // сдвиг точки на количество символов
-
-    return (Math.floor(randomNumber * multiplier ))/ multiplier;
-  }
-  return false;
-}
-getRandomFractionalNumber(-5, 0, 3);
-
-//либо вариант с toFixed
-
-
-function getRandomFractionalNumberZwei(min, max, numberSymbols ) {
+function getRandomFractionalNumber(min, max, numberSymbols) {
   if(max > min && min >= 0 && numberSymbols >= 0){
     const randomNumber = (Math.random() * (max - min)) + min;  //случайное дробное в диапазоне [min, max)
     const cropNumber = randomNumber.toFixed(numberSymbols);
@@ -35,6 +18,87 @@ function getRandomFractionalNumberZwei(min, max, numberSymbols ) {
   }
   return false;
 }
-getRandomFractionalNumberZwei(0, 5, 3);
 
+// получение случайного элемента массива
+function getArrayRandomElement (array) {
+  const random = Math.floor(Math.random() * array.length);
+  return array[random];
+}
 
+// получение нескольких случайных элеменов массива, откуда-то взяла, не нравится
+function getArrayRandomElements (array) {
+  const clone = array.slice();
+  const newArray = [];
+  const randomCount = Math.floor(Math.random() * array.length);
+
+  for (let i = 0; i < randomCount; i++) {
+    newArray.push(clone.splice(Math.floor(Math.random() * clone.length), 1));
+  }
+  return newArray;
+}
+
+const PRICE_MAX = 1000;
+const PRICE_MIN = 10;
+const ARRAY_OFFER = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
+const ROOMS_MAX = 10;
+const ROOMS_MIN = 1;
+const GUESTS_MAX = 10;
+const GUESTS_MIN = 1;
+const ARRAY_CHECKIN = ['12:00', '13:00', '14:00'];
+const ARRAY_CHECKOUT = ['12:00', '13:00', '14:00'];
+
+const ARRAY_FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+const ARRAY_PHOTOS = [
+  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg',
+  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
+  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'
+];
+
+const LAT_MAX = 35.70000;
+const LAT_MIN = 35.65000;
+const LNG_MAX = 139.80000;
+const LNG_MIN = 139.70000;
+
+function createAd (itemNumber) {
+  const ad = {};
+  const adAuthor = {};
+  const adOffer = {};
+  const adLocation = {};
+  const a = itemNumber + 1;
+
+  adAuthor.avatar = `img/avatars/user${  String(a).padStart(2, '0')  }.png`;
+
+  adLocation.lat = getRandomFractionalNumber(LAT_MIN, LAT_MAX, 5);
+  adLocation.lng = getRandomFractionalNumber(LNG_MIN, LNG_MAX, 5);
+
+  adOffer.title = `Предложение ${  a}`;
+  adOffer.address = `${adLocation.lat  }, ${  adLocation.lng}`;
+  adOffer.price = getRandomInteger(PRICE_MIN, PRICE_MAX);
+  adOffer.type = getArrayRandomElement(ARRAY_OFFER);
+  adOffer.rooms = getRandomInteger(ROOMS_MIN, ROOMS_MAX);
+  adOffer.guests = getRandomInteger(GUESTS_MIN, GUESTS_MAX);
+  adOffer.checkin = getArrayRandomElement(ARRAY_CHECKIN);
+  adOffer.checkout = getArrayRandomElement(ARRAY_CHECKOUT);
+  adOffer.features = getArrayRandomElements(ARRAY_FEATURES);
+  adOffer.description = `Текст описания ${  a}`;
+  adOffer.photos = getArrayRandomElements(ARRAY_PHOTOS);
+
+  ad.author = adAuthor;
+  ad.offer = adOffer;
+  ad.location = adLocation;
+
+  return ad;
+}
+
+// фунция для создания массива из объектов-оъявлений
+function createAds (elementsCount) {
+  const adsArray = [];
+  for (let i = 0; i < elementsCount; i++) {
+    adsArray[i] = createAd(i);
+  }
+
+  return adsArray;
+}
+
+//const adData = createAds(10);
+createAds(10);
