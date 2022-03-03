@@ -25,16 +25,14 @@ function getArrayRandomElement (array) {
   return array[random];
 }
 
-// получение нескольких случайных элеменов массива, откуда-то взяла, не нравится
-function getArrayRandomElements (array) {
-  const clone = array.slice();
-  const newArray = [];
-  const randomCount = Math.floor(Math.random() * array.length);
+//получение случайного true/false
+function boolean () {
+  return getRandomInteger(0, 1);
+}
 
-  for (let i = 0; i < randomCount; i++) {
-    newArray.push(clone.splice(Math.floor(Math.random() * clone.length), 1));
-  }
-  return newArray;
+//получение нескольких случайных элеменов массива
+function getArrayRandomElements (array) {
+  return array.filter(() => boolean ());
 }
 
 const PRICE_MAX = 1000;
@@ -64,14 +62,14 @@ function createAd (itemNumber) {
   const adAuthor = {};
   const adOffer = {};
   const adLocation = {};
-  const a = itemNumber + 1;
+  const counter = itemNumber + 1;
 
-  adAuthor.avatar = `img/avatars/user${  String(a).padStart(2, '0')  }.png`;
+  adAuthor.avatar = `img/avatars/user${  String(counter).padStart(2, '0')  }.png`;
 
   adLocation.lat = getRandomFractionalNumber(LAT_MIN, LAT_MAX, 5);
   adLocation.lng = getRandomFractionalNumber(LNG_MIN, LNG_MAX, 5);
 
-  adOffer.title = `Предложение ${  a}`;
+  adOffer.title = `Предложение ${  counter}`;
   adOffer.address = `${adLocation.lat  }, ${  adLocation.lng}`;
   adOffer.price = getRandomInteger(PRICE_MIN, PRICE_MAX);
   adOffer.type = getArrayRandomElement(ARRAY_OFFER);
@@ -80,7 +78,7 @@ function createAd (itemNumber) {
   adOffer.checkin = getArrayRandomElement(ARRAY_CHECKIN);
   adOffer.checkout = getArrayRandomElement(ARRAY_CHECKOUT);
   adOffer.features = getArrayRandomElements(ARRAY_FEATURES);
-  adOffer.description = `Текст описания ${  a}`;
+  adOffer.description = `Текст описания ${  counter}`;
   adOffer.photos = getArrayRandomElements(ARRAY_PHOTOS);
 
   ad.author = adAuthor;
