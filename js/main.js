@@ -1,3 +1,3 @@
-import './data.js';
+import './create-simular-ads.js';
 
 

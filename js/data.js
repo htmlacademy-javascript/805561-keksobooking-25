@@ -12,6 +12,7 @@ const ARRAY_CHECKOUT = ['12:00', '13:00', '14:00'];
 
 const ARRAY_FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 const ARRAY_PHOTOS = [
+  '',
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg',
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'
@@ -21,6 +22,7 @@ const LAT_MAX = 35.70000;
 const LAT_MIN = 35.65000;
 const LNG_MAX = 139.80000;
 const LNG_MIN = 139.70000;
+const SIMILAR_AD_COUNT = 2;
 
 function createAd (itemNumber) {
   const ad = {};
@@ -63,6 +65,9 @@ function createAds (elementsCount) {
   return adsArray;
 }
 
-//const adData = createAds(10);
-createAds(10);
-//console.log(adData);
+const createAdsData = createAds(SIMILAR_AD_COUNT);
+
+console.log(createAdsData);
+
+
+export {createAdsData};
