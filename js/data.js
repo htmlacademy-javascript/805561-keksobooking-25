@@ -67,7 +67,7 @@ function createAds (elementsCount) {
 
 const createAdsData = createAds(SIMILAR_AD_COUNT);
 
-console.log(createAdsData);
+//console.log(createAdsData);
 
 
 export {createAdsData};
