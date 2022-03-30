@@ -71,7 +71,7 @@
     <!-- Форма объявления -->
     <section class="notice">
       <h2 class="notice__title">Ваше объявление</h2>
-      <form class="ad-form" method="post" enctype="multipart/form-data" autocomplete="off">
+      <form class="ad-form" method="post" enctype="multipart/form-data" autocomplete="off" action="https://25.javascript.pages.academy/keksobooking">
         <fieldset class="ad-form-header">
           <legend class="ad-form-header__title">Ваша фотография (для карты)</legend>
           <div class="ad-form-header__upload">
@@ -85,17 +85,20 @@
             <p class="ad-form-header__info">Заполните все обязательные поля, назначьте цену, загрузите аватар и фото жилья. Придумайте интересное описание. Оно сделает объявление более живым и привлекательным. Получившееся объявление должно давать гостям полное представление о вашем жилье.</p>
           </div>
         </fieldset>
-        <fieldset class="ad-form__element ad-form__element--wide">
+        <fieldset class="ad-form__element ad-form__element--wide validate-element error-text-parent">
           <label class="ad-form__label" for="title">Заголовок объявления</label>
-          <input id="title" name="title" type="text" placeholder="Милая, уютная квартирка в центре Токио">
+          <input id="title" name="title" type="text" placeholder="Милая, уютная квартирка в центре Токио" minlength="30" maxlength="100" autofocus required
+          data-pristine-required-message="Обязательное поле"
+          data-pristine-minlength-message="Минимальная длина 30 символа"
+          data-pristine-maxlength-message="Максимальная длина 100 символов">
         </fieldset>
         <fieldset class="ad-form__element ad-form__element--wide">
           <label class="ad-form__label" for="address">Адрес (координаты)</label>
-          <input id="address" name="address" type="text">
+          <input id="address" name="address" type="text" readonly>
         </fieldset>
         <fieldset class="ad-form__element">
           <label class="ad-form__label" for="type">Тип жилья</label>
-          <select id="type" name="type">
+          <select id="type" name="type" >
             <option value="bungalow">Бунгало</option>
             <option value="flat" selected>Квартира</option>
             <option value="hotel">Отель</option>
@@ -103,9 +106,11 @@
             <option value="palace">Дворец</option>
           </select>
         </fieldset>
-        <fieldset class="ad-form__element">
+        <fieldset class="ad-form__element validate-element error-text-parent">
           <label class="ad-form__label" for="price">Цена за ночь, руб.</label>
-          <input id="price" name="price" type="number" placeholder="5000">
+          <input id="price" name="price" type="number" placeholder="5000"  min="1" max="100000" required
+                 data-pristine-required-message="Обязательное поле"
+                 data-pristine-max-message="Максимальное значение 100000"  >
           <div class="ad-form__slider"></div>
         </fieldset>
         <fieldset class="ad-form__element ad-form__element--time">
@@ -121,24 +126,26 @@
             <option value="14:00">Выезд до 14</option>
           </select>
         </fieldset>
-        <fieldset class="ad-form__element">
-          <label class="ad-form__label" for="room_number">Количество комнат</label>
-          <select id="room_number" name="rooms">
-            <option value="1" selected>1 комната</option>
-            <option value="2">2 комнаты</option>
-            <option value="3">3 комнаты</option>
-            <option value="100">100 комнат</option>
-          </select>
-        </fieldset>
-        <fieldset class="ad-form__element">
-          <label class="ad-form__label" for="capacity">Количество мест</label>
-          <select id="capacity" name="capacity">
-            <option value="3" selected>для 3 гостей</option>
-            <option value="2">для 2 гостей</option>
-            <option value="1">для 1 гостя</option>
-            <option value="0">не для гостей</option>
-          </select>
-        </fieldset>
+
+          <fieldset class="ad-form__element validate-element error-text-parent">
+            <label class="ad-form__label" for="room_number">Количество комнат</label>
+            <select id="room_number" name="rooms">
+              <option value="1" selected>1 комната</option>
+              <option value="2">2 комнаты</option>
+              <option value="3">3 комнаты</option>
+              <option value="100">100 комнат</option>
+            </select>
+          </fieldset>
+          <fieldset class="ad-form__element validate-element">
+            <label class="ad-form__label" for="capacity">Количество мест</label>
+            <select id="capacity" name="capacity">
+              <option value="3" >для 3 гостей</option>
+              <option value="2">для 2 гостей</option>
+              <option value="1" selected>для 1 гостя</option>
+              <option value="0">не для гостей</option>
+            </select>
+          </fieldset>
+
         <fieldset class="ad-form__element ad-form__element--wide features">
           <legend>Удобства: Wi-Fi, кухня, парковка, стиралка, лифт, кондиционер</legend>
           <input class="features__checkbox visually-hidden" type="checkbox" name="feature" value="wifi" id="feature-wifi">
@@ -231,6 +238,7 @@
     </div>
   </template>
 
+  <script src="pristine/pristine.min.js"></script>
   <script src="js/main.js" type="module"></script>
 
 </body>
