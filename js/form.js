@@ -18,10 +18,10 @@ function validateCapacity () {
 
 function getCapacityErrorMessage () {
   if (capacityField.value === '0') {
-    return 'не для гостей 100 комнат ';
+    return 'Не для гостей 100 комнат ';
   }
   if (roomNumberField.value === '100') {
-    return '100 комнат не для гостей';
+    return '100 комнат - не для гостей';
   }
   return 'Гостей больше, чем комнат';
 }
@@ -29,17 +29,17 @@ function getCapacityErrorMessage () {
 pristine.addValidator(roomNumberField, validateCapacity, getCapacityErrorMessage);
 pristine.addValidator(capacityField, validateCapacity, getCapacityErrorMessage);
 
-function roomNumberChange () {
+function onRoomNumberChange () {
   pristine.validate(capacityField);
   capacityField.nextElementSibling.textContent = '';
 }
-function capacityChange () {
+function onCapacityChange () {
   pristine.validate(roomNumberField);
   roomNumberField.nextElementSibling.textContent = '';
 }
 
-roomNumberField.addEventListener('change', roomNumberChange);
-capacityField.addEventListener('change', capacityChange);
+roomNumberField.addEventListener('change', onRoomNumberChange);
+capacityField.addEventListener('change', onCapacityChange);
 
 form.addEventListener('submit', (evt) => {
   evt.preventDefault();
