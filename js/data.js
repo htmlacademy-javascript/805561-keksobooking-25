@@ -61,7 +61,6 @@ function createAds (elementsCount) {
   for (let i = 0; i < elementsCount; i++) {
     adsArray[i] = createAd(i);
   }
-
   return adsArray;
 }
 
