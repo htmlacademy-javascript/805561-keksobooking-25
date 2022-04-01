@@ -75,11 +75,11 @@ const timeinField = form.querySelector('#timein');
 const timeoutField = form.querySelector('#timeout');
 
 function onTimeinFieldInput () {
-  timeoutField.querySelector(`[value="${  this.value  }"]`).selected = true;
+  timeoutField.value = this.value;
 }
 
 function onTimeoutFieldInput () {
-  timeinField.querySelector(`[value="${  this.value  }"]`).selected = true;
+  timeinField.value = this.value;
 }
 
 timeinField.addEventListener('input', onTimeinFieldInput);
