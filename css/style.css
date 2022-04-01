@@ -641,6 +641,18 @@ fieldset {
           box-shadow: 0 0 2px 2px #ff6547;
 }
 
+.pristine-error {
+  color: #2133e8;
+}
+
+.form__element--invalid  select,
+.form__element--invalid  input {
+  border: 2px solid #2133e8;
+}
+
+.form__error-text {
+  margin: 4px 0 0;
+}
 
 /* Футер
    ========================================================================== */
