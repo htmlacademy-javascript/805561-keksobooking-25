@@ -1,9 +1,5 @@
-import {createSimilarAds} from './similar-ads.js';
 import  './form.js';
-import {getPageInactive, getPageActive} from './page-status.js';
+import  './map.js';
+import  './slider.js';
 
-createSimilarAds();
-
-getPageInactive();
-getPageActive();
 

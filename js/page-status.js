@@ -1,6 +1,6 @@
 const form = document.querySelector('.ad-form');
 const formFieldsets = form.querySelectorAll('fieldset');
-//const slider = form.querySelector('.ad-form__slider');
+const slider = form.querySelector('.ad-form__slider');
 
 const filter = document.querySelector('.map__filters');
 const filterSelects = filter.querySelectorAll('.map__filter');
@@ -12,15 +12,13 @@ function getPageActive () {
   formFieldsets .forEach((formFieldset) => {
     formFieldset.disabled = false;
   });
-  //slider.разблокировать;
+  slider.removeAttribute('disabled');
   filter.classList.remove('map__filters--disabled');
   filterSelects .forEach((filterSelect) => {
     filterSelect.disabled = false;
   });
   filterFieldset.disabled = false;
 }
-//getPageActive ();
-// вызывается по событию загрузки карты
 
 
 function getPageInactive () {
@@ -28,7 +26,7 @@ function getPageInactive () {
   formFieldsets .forEach((formFieldset) => {
     formFieldset.disabled = true;
   });
-  //slider.заблокировать;
+  slider.setAttribute('disabled', true);
   filter.classList.add('map__filters--disabled');
   filterSelects .forEach((filterSelect) => {
     filterSelect.disabled = true;

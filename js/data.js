@@ -22,7 +22,7 @@ const LAT_MAX = 35.70000;
 const LAT_MIN = 35.65000;
 const LNG_MAX = 139.80000;
 const LNG_MIN = 139.70000;
-const SIMILAR_AD_COUNT = 2;
+const SIMILAR_AD_COUNT = 10;
 
 function createAd (itemNumber) {
   const ad = {};
