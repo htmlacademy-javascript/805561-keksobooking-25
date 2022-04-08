@@ -51,12 +51,16 @@ const minPrice = {
   'palace': 10000
 };
 
+// eslint-disable-next-line no-unused-vars
+let minPriceValue;
 function onTypeFieldInput(){
   const type = this.value;
   //console.log(type);
   priceField.min = minPrice[type];
   priceField.placeholder = minPrice[type];
   pristine.validate(priceField);
+  minPriceValue = minPrice[type];
+  //console.log(minPriceValue);
 }
 
 typeField.addEventListener('input', onTypeFieldInput);
@@ -96,3 +100,5 @@ form.addEventListener('submit', (evt) => {
     //console.log('Форма невалидна');
   }*/
 });
+
+export {minPriceValue};
