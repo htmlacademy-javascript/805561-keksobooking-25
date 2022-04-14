@@ -1,6 +1,7 @@
 import {getPageActive} from './page-status.js';
-import {createAdsData} from './data.js';
+//import {createAdsData} from './data.js';
 import {createAdPopup} from './similar-ads.js';
+import {getDataFromServer} from './network.js';
 
 const LATITUDE_INITIAL = 35.6895;
 const LONGITUDE_INITIAL = 139.692;
@@ -10,6 +11,7 @@ const map = L.map('map-canvas')
     getPageActive();
     adressField.value = `широта: ${  LATITUDE_INITIAL  }, долгота: ${  LONGITUDE_INITIAL}`;
     //console.log('Карта инициализирована');
+    getDataFromServer();
   })
   .setView({
     lat: LATITUDE_INITIAL,
@@ -56,19 +58,25 @@ const icon = L.icon({
   iconAnchor: [20, 40],
 });
 
-createAdsData.forEach((ad) => {
-  const {location:{lat, lng}} = ad;
-  const marker = L.marker(
-    {
-      lat,
-      lng,
-    },
-    {
-      icon,
-    },
-  );
+function creatrMarkers(adsData){
+  //createAdsData.forEach((ad) => {
+  adsData.forEach((ad) => {
+    const {location:{lat, lng}} = ad;
+    const marker = L.marker(
+      {
+        lat,
+        lng,
+      },
+      {
+        icon,
+      },
+    );
 
-  marker
-    .addTo(map)
-    .bindPopup(createAdPopup(ad));
-});
+    marker
+      .addTo(map)
+      .bindPopup(createAdPopup(ad));
+  });
+
+}
+
+export {creatrMarkers};

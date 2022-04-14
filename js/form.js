@@ -1,3 +1,5 @@
+import {sendFormData} from './network.js';
+
 const form = document.querySelector('.ad-form');
 
 const pristine = new Pristine(form, {
@@ -90,15 +92,16 @@ timeinField.addEventListener('input', onTimeinFieldInput);
 timeoutField.addEventListener('input', onTimeoutFieldInput);
 
 form.addEventListener('submit', (evt) => {
-  evt.preventDefault();
   pristine.validate();
-
-  /*const isValid = pristine.validate();
+  const isValid = pristine.validate();
+  console.log(isValid);
   if (isValid) {
-    //console.log('Можно отправлять');
+    console.log('Можно отправлять');
+    sendFormData();
   } else {
-    //console.log('Форма невалидна');
-  }*/
+    evt.preventDefault();
+    console.log('Форма невалидна');
+  }
 });
 
 export {minPriceValue};

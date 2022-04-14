@@ -51,13 +51,20 @@ function createAdPopup (ad){
     newElement.querySelector('.popup__text--time').remove();
   }
 
+  //здесь для эксперимента через try/catch
   const featuresContainer = newElement.querySelector('.popup__features');
   const features = featuresContainer.querySelectorAll('.popup__feature');
+
   features.forEach((feature) => {
-    const isNecessary = ad.offer.features.some(
-      (offerfeature) => feature.classList.contains(`popup__feature--${offerfeature}`),
-    );
-    if (!isNecessary) {
+    try {
+      const isNecessary = ad.offer.features.some(
+        (offerfeature) => feature.classList.contains(`popup__feature--${offerfeature}`),
+      );
+      if (!isNecessary) {
+        feature.remove();
+      }
+    } catch (err) {
+      console.log('Удобства не указаны', err.message, err.stack);
       feature.remove();
     }
   });
@@ -68,7 +75,7 @@ function createAdPopup (ad){
     newElement.querySelector('.popup__description').remove();
   }
 
-  if (ad.offer.photos.length) {
+  if (ad.offer.photos) {
     ad.offer.photos.forEach((photo) => {
       const offerPhotoList = newElement.querySelector('.popup__photos');
       const offerPhoto = newElement.querySelector('.popup__photo').cloneNode(true);
