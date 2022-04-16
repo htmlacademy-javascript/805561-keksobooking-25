@@ -1,7 +1,8 @@
 import {sendFormData} from './network.js';
+import {mapReset} from './map.js';
+import {isEscapeKey} from './util.js';
 
 const form = document.querySelector('.ad-form');
-
 const pristine = new Pristine(form, {
   classTo: 'validate-element',
   errorTextParent: 'validate-element',
@@ -53,16 +54,12 @@ const minPrice = {
   'palace': 10000
 };
 
-// eslint-disable-next-line no-unused-vars
-let minPriceValue;
 function onTypeFieldInput(){
   const type = this.value;
   //console.log(type);
   priceField.min = minPrice[type];
   priceField.placeholder = minPrice[type];
   pristine.validate(priceField);
-  minPriceValue = minPrice[type];
-  //console.log(minPriceValue);
 }
 
 typeField.addEventListener('input', onTypeFieldInput);
@@ -91,17 +88,95 @@ function onTimeoutFieldInput () {
 timeinField.addEventListener('input', onTimeinFieldInput);
 timeoutField.addEventListener('input', onTimeoutFieldInput);
 
+
+const resetButton = document.querySelector('.ad-form__reset');
+resetButton.addEventListener('click', () => {
+  //evt.preventDefault();
+  getInitialPageState();
+});
+
 form.addEventListener('submit', (evt) => {
+  evt.preventDefault();
   pristine.validate();
   const isValid = pristine.validate();
-  console.log(isValid);
   if (isValid) {
-    console.log('Можно отправлять');
-    sendFormData();
+    //console.log('Можно отправлять');
+    sendFormData(form, sendSuccessfulForm, sendUnsuccessfulForm);
   } else {
-    evt.preventDefault();
-    console.log('Форма невалидна');
+    //console.log('Форма невалидна');
   }
 });
 
-export {minPriceValue};
+function sendSuccessfulForm() {
+  blockSubmitButton();
+  openSuccessMessage();
+  getInitialPageState();//возвращение формы и карты в исходное состояние при успешной отправке
+  unblockSubmitButton ();
+}
+function sendUnsuccessfulForm() {
+  blockSubmitButton();
+  openErrorMessage();
+  unblockSubmitButton ();
+}
+
+const submitButton = form.querySelector('.ad-form__submit');
+function blockSubmitButton ()  {
+  submitButton.disabled = true;
+  submitButton.textContent = 'Отправка';
+}
+
+function unblockSubmitButton () {
+  submitButton.disabled = false;
+  submitButton.textContent = 'Опубликовать';
+}
+
+//При успешной отправке формы или её очистке (нажатие на кнопку .ad-form__reset) страница, не перезагружаясь, переходит в  исходное состояние:
+function getInitialPageState(){
+  form.reset();
+  setTimeout(() => {
+    mapReset();
+  }, 500);
+  //фильтрация (состояние фильтров и отфильтрованные метки) сбрасывается - сделать позже, росле фильтров
+}
+
+// при успешной отправке формы выводится сообщение #success
+const  successPopupTemplate = document.querySelector('#success').content.querySelector('.success');
+function openSuccessMessage() {
+  const newElement = successPopupTemplate.cloneNode(true);
+  document.body.append(newElement);
+
+  document.addEventListener('keydown', closeSuccessMessage);
+  document.addEventListener('click', closeSuccessMessage);
+}
+
+function closeSuccessMessage(evt) {
+  const successPopup = document.querySelector('.success');
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+  }
+  successPopup.remove();
+  document.removeEventListener('keydown', closeSuccessMessage);
+  document.removeEventListener('click', closeSuccessMessage);
+}
+
+// при ошибке отправки запроса сообщение #error
+const  errorPopupTemplate = document.querySelector('#error').content.querySelector('.error');
+function openErrorMessage() {
+  const newElement = errorPopupTemplate.cloneNode(true);
+  document.body.append(newElement);
+
+  document.addEventListener('keydown', closeErrorMessage);
+  document.addEventListener('click', closeErrorMessage);
+}
+
+function closeErrorMessage(evt) {
+  const errorPopup = document.querySelector('.error');
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+  }
+  errorPopup.remove();
+  document.removeEventListener('keydown', closeErrorMessage);
+  document.removeEventListener('click', closeErrorMessage);
+}
+
+

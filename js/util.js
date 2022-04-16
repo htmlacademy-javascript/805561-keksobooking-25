@@ -35,4 +35,8 @@ function getArrayRandomElements (array) {
   return array.filter(() => boolean ());
 }
 
-export {getRandomFractionalNumber, getRandomInteger, getArrayRandomElement, getArrayRandomElements, boolean};
+function isEscapeKey(evt) {
+  return evt.key === 'Escape';
+}
+
+export {getRandomFractionalNumber, getRandomInteger, getArrayRandomElement, getArrayRandomElements, boolean, isEscapeKey};

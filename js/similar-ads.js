@@ -64,7 +64,7 @@ function createAdPopup (ad){
         feature.remove();
       }
     } catch (err) {
-      console.log('Удобства не указаны', err.message, err.stack);
+      //console.log('Удобства не указаны', err.message, err.stack);
       feature.remove();
     }
   });

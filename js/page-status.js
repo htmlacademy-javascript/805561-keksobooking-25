@@ -20,7 +20,6 @@ function getPageActive () {
   filterFieldset.disabled = false;
 }
 
-
 function getPageInactive () {
   form.classList.add('ad-form--disabled');
   formFieldsets .forEach((formFieldset) => {
