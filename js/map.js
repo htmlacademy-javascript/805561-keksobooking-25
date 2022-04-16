@@ -30,6 +30,7 @@ function createMap(){
 }
 createMap();//вот где ее лучше вызвать - в main.js по событию загрузки страницы?
 
+let mainPinMarker;
 function createPinMarker() {
   const mainPinIcon = L.icon({
     iconUrl: './img/main-pin.svg',
@@ -37,7 +38,7 @@ function createPinMarker() {
     iconAnchor: [26, 52],
   });
 
-  const mainPinMarker = L.marker(
+  mainPinMarker = L.marker(
     {
       lat: LATITUDE_INITIAL,
       lng: LONGITUDE_INITIAL,
@@ -112,12 +113,23 @@ function errorMessage  () {
 
 // возврат карты в исходное состояние с закрытием балуна,ой, перемудрила я..
 function mapReset(){
-  map.off();
-  map.remove();
-  createMap();
-  createPinMarker();
-  getDataFromServer(createMarkers, errorMessage);
-  //console.log('карта перезагружена');
+  //перемещение метки в исходную точку по клику
+  mainPinMarker.setLatLng({
+    lat: LATITUDE_INITIAL,
+    lng: LONGITUDE_INITIAL,
+  });
+  //возвращение к начальным значениям масштаба и центра карты.
+  map.setView({
+    lat: LATITUDE_INITIAL,
+    lng: LONGITUDE_INITIAL,
+  }, 12);
+  //закрываем открытый балун, если он есть
+  const lefletPopup = document.querySelector ('.leaflet-popup');
+  if(lefletPopup){
+    lefletPopup.remove();
+  }
+  adressField.value = `широта: ${  LATITUDE_INITIAL  }, долгота: ${  LONGITUDE_INITIAL}`;
+  //console.log('карта приведена в исходный вид');
 }
 
 export {mapReset};

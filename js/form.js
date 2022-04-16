@@ -88,7 +88,6 @@ function onTimeoutFieldInput () {
 timeinField.addEventListener('input', onTimeinFieldInput);
 timeoutField.addEventListener('input', onTimeoutFieldInput);
 
-
 const resetButton = document.querySelector('.ad-form__reset');
 resetButton.addEventListener('click', () => {
   //evt.preventDefault();
@@ -130,11 +129,20 @@ function unblockSubmitButton () {
   submitButton.textContent = 'Опубликовать';
 }
 
-//При успешной отправке формы или её очистке (нажатие на кнопку .ad-form__reset) страница, не перезагружаясь, переходит в  исходное состояние:
+//При успешной отправке формы или её очистке (нажатие на кнопку .ad-form__reset) страница, не перезагружаясь, переходит в  исходное состояние
+const sliderElement = document.querySelector('.ad-form__slider');
+const valueElement = document.querySelector('#price');
 function getInitialPageState(){
   form.reset();
   setTimeout(() => {
     mapReset();
+    sliderElement.noUiSlider.updateOptions({
+      range: {
+        min: Number(valueElement.min),
+        max: 100000,
+      },
+    });
+    sliderElement.noUiSlider.set(Number(valueElement.min));
   }, 500);
   //фильтрация (состояние фильтров и отфильтрованные метки) сбрасывается - сделать позже, росле фильтров
 }
