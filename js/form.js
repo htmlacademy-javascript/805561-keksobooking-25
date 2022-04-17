@@ -103,6 +103,7 @@ form.addEventListener('submit', (evt) => {
     sendFormData(form, sendSuccessfulForm, sendUnsuccessfulForm);
   } else {
     //console.log('Форма невалидна');
+    openErrorMessage();
   }
 });
 

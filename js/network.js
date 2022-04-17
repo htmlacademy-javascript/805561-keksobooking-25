@@ -9,7 +9,7 @@ function getDataFromServer(onSuccess, onError){
     })
     .then((response) => response.json())
     .then((data) => {
-      //console.log('Результат', data);
+      console.log('Результат', data);
       onSuccess(data);
     })
     .catch(() => {
