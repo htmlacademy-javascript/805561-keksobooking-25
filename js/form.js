@@ -99,7 +99,7 @@ form.addEventListener('submit', (evt) => {
   if (isValid) {
     sendFormData(form, sendSuccessfulForm, sendUnsuccessfulForm);
   } else {
-    openErrorMessage();
+
   }
 });
 
@@ -138,8 +138,16 @@ const sliderElement = document.querySelector('.ad-form__slider');
 const valueElement = document.querySelector('#price');
 
 function getInitialPageState(){
+  const previewAvatar = document.querySelector('.ad-form-header__preview img');
+  const previewAdFoto = document.querySelector('.ad-form__photo img');
+  if(previewAvatar || previewAdFoto){
+    previewAvatar.src = 'img/muffin-grey.svg';
+    previewAdFoto.remove();
+  }
+
   form.reset();
   setTimeout(() => {
+
     mapReset();
     sliderElement.noUiSlider.updateOptions({
       range: {
