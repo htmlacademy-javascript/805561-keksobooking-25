@@ -145,7 +145,6 @@ function getInitialPageState(){
   }
   form.reset();
   setTimeout(() => {
-
     mapReset();
     sliderElement.noUiSlider.updateOptions({
       range: {
