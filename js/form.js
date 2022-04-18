@@ -97,10 +97,7 @@ form.addEventListener('submit', (evt) => {
   pristine.validate();
   const isValid = pristine.validate();
   if (isValid) {
-    sendFormData(form, sendSuccessfulForm, sendUnsuccessfulForm);
-  } else {
-
-  }
+    sendFormData(form, sendSuccessfulForm, sendUnsuccessfulForm);  }
 });
 
 const filterForm = document.querySelector('.map__filters');

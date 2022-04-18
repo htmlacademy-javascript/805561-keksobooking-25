@@ -30,7 +30,6 @@ function sendFormData (form, onSuccess, onError) {
     )
     .then((data) => {
       onSuccess(data);
-      console.log(data);
     })
     .catch((err) => {
       onError(err);
