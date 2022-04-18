@@ -55,7 +55,6 @@ function createAd (itemNumber) {
   return ad;
 }
 
-// фунция для создания массива из объектов-оъявлений
 function createAds (elementsCount) {
   const adsArray = [];
   for (let i = 0; i < elementsCount; i++) {
@@ -65,8 +64,5 @@ function createAds (elementsCount) {
 }
 
 const createAdsData = createAds(SIMILAR_AD_COUNT);
-
-//console.log(createAdsData);
-
 
 export {createAdsData};

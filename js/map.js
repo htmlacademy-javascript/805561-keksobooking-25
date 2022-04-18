@@ -1,5 +1,4 @@
 import {getPageActive, getFilterActive} from './page-status.js';
-//import {createAdsData} from './data.js';
 import {createAdPopup} from './similar-ads.js';
 import {getDataFromServer} from './network.js';
 import {debounce, errorMessage} from './util.js';
@@ -17,7 +16,6 @@ let markerGroup;
 function createMap(){
   map = L.map('map-canvas')
     .on('load', () => {
-      //getDataFromServer(createMarkers, errorMessage);
       getDataFromServer(onAdsLoad, errorMessage);
       getPageActive();
       adressField.value = `широта: ${  LATITUDE_INITIAL  }, долгота: ${  LONGITUDE_INITIAL}`;
@@ -63,7 +61,6 @@ function createPinMarker() {
     const latitude =  evt.target.getLatLng().lat.toFixed(numberSymbols);
     const longitude = evt.target.getLatLng().lng.toFixed(numberSymbols);
     adressField.value = `широта: ${  latitude  }, долгота: ${  longitude}`;
-    //console.log(evt.target.getLatLng());
   });
 }
 
@@ -94,7 +91,6 @@ function createMarkers(adsData){
     });
 }
 
-//удаление слоя с метками
 function clearMarkers() {
   markerGroup.clearLayers();
 }
@@ -106,7 +102,6 @@ function reRender() {
   createMarkers(adsArrey);
 }
 
-//отрисовка маркеров и разблокирование фильтров
 function renderAds(data) {
   createMarkers(data);
   getFilterActive();
@@ -128,7 +123,6 @@ function onAdsLoad(data) {
 }
 
 
-// возврат карты в исходное состояние с закрытием балуна,ой, перемудрила я..
 function mapReset(){
   mainPinMarker.setLatLng({
     lat: LATITUDE_INITIAL,
@@ -138,7 +132,7 @@ function mapReset(){
     lat: LATITUDE_INITIAL,
     lng: LONGITUDE_INITIAL,
   }, 12);
-  //закрываем открытый балун, если он есть
+
   const lefletPopup = document.querySelector ('.leaflet-popup');
   if(lefletPopup){
     lefletPopup.remove();

@@ -35,7 +35,6 @@ function getAdRank (ad)  {
       }
     });
   }
-  //console.log(rank);
   return rank;
 }
 

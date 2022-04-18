@@ -35,6 +35,5 @@ function getPageInactive () {
   });
   filterFieldset.disabled = true;
 }
-//getPageInactive ();
 
 export {getPageInactive, getPageActive, getFilterActive};
