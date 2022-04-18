@@ -1,35 +1,5 @@
 const ALERT_SHOW_TIME = 7000;
 
-function getRandomInteger(min, max) {
-  if(max > min && min >= 0){
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
-  return false;
-}
-
-function getRandomFractionalNumber(min, max, numberSymbols) {
-  if(max > min && min >= 0 && numberSymbols >= 0){
-    const randomNumber = (Math.random() * (max - min)) + min;
-    const cropNumber = randomNumber.toFixed(numberSymbols);
-
-    return parseFloat(cropNumber);
-  }
-  return false;
-}
-
-function getArrayRandomElement (array) {
-  const random = Math.floor(Math.random() * array.length);
-  return array[random];
-}
-
-function boolean () {
-  return getRandomInteger(0, 1);
-}
-
-function getArrayRandomElements (array) {
-  return array.filter(() => boolean ());
-}
-
 function isEscapeKey(evt) {
   return evt.key === 'Escape';
 }
@@ -69,4 +39,4 @@ function errorMessage  () {
   }, ALERT_SHOW_TIME);
 }
 
-export {getRandomFractionalNumber, getRandomInteger, getArrayRandomElement, getArrayRandomElements, boolean, isEscapeKey, isNumberIntervalIncluded, debounce, errorMessage};
+export {isEscapeKey, isNumberIntervalIncluded, debounce, errorMessage};
