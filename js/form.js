@@ -2,7 +2,6 @@ import {sendFormData} from './network.js';
 import {mapReset, reRender} from './map.js';
 import {isEscapeKey} from './util.js';
 
-
 const form = document.querySelector('.ad-form');
 const pristine = new Pristine(form, {
   classTo: 'validate-element',
@@ -57,7 +56,6 @@ const minPrice = {
 
 function onTypeFieldInput(){
   const type = this.value;
-  //console.log(type);
   priceField.min = minPrice[type];
   priceField.placeholder = minPrice[type];
   pristine.validate(priceField);
@@ -91,7 +89,6 @@ timeoutField.addEventListener('input', onTimeoutFieldInput);
 
 const resetButton = document.querySelector('.ad-form__reset');
 resetButton.addEventListener('click', () => {
-  //evt.preventDefault();
   getInitialPageState();
 });
 
@@ -100,10 +97,8 @@ form.addEventListener('submit', (evt) => {
   pristine.validate();
   const isValid = pristine.validate();
   if (isValid) {
-    //console.log('Можно отправлять');
     sendFormData(form, sendSuccessfulForm, sendUnsuccessfulForm);
   } else {
-    //console.log('Форма невалидна');
     openErrorMessage();
   }
 });
@@ -117,7 +112,7 @@ function filterReset() {
 function sendSuccessfulForm() {
   blockSubmitButton();
   openSuccessMessage();
-  getInitialPageState();//возвращение формы и карты в исходное состояние при успешной отправке
+  getInitialPageState();
   unblockSubmitButton ();
   filterReset();
 }
@@ -139,7 +134,6 @@ function unblockSubmitButton () {
   submitButton.textContent = 'Опубликовать';
 }
 
-//При успешной отправке формы или её очистке (нажатие на кнопку .ad-form__reset) страница, не перезагружаясь, переходит в  исходное состояние
 const sliderElement = document.querySelector('.ad-form__slider');
 const valueElement = document.querySelector('#price');
 
@@ -155,11 +149,10 @@ function getInitialPageState(){
     });
     sliderElement.noUiSlider.set(Number(valueElement.min));
   }, 500);
-  //фильтрация (состояние фильтров и отфильтрованные метки) сбрасывается - сделать позже, росле фильтров
+
   filterReset();
 }
 
-// при успешной отправке формы выводится сообщение #success
 const  successPopupTemplate = document.querySelector('#success').content.querySelector('.success');
 function openSuccessMessage() {
   const newElement = successPopupTemplate.cloneNode(true);
@@ -179,7 +172,6 @@ function closeSuccessMessage(evt) {
   document.removeEventListener('click', closeSuccessMessage);
 }
 
-// при ошибке отправки запроса сообщение #error
 const  errorPopupTemplate = document.querySelector('#error').content.querySelector('.error');
 function openErrorMessage() {
   const newElement = errorPopupTemplate.cloneNode(true);

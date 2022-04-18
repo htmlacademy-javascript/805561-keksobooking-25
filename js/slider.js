@@ -36,7 +36,6 @@ function createSlider() {
     sliderElement.noUiSlider.set(Number(valueElement.min));
   });
 
-  //это чтобы слайдер двигался при изменении цены ручками
   valueElement.addEventListener('input', () => {
     sliderElement.noUiSlider.set(valueElement.value);
   });

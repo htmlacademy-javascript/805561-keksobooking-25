@@ -1,11 +1,9 @@
-
 function getDataFromServer(onSuccess, onError){
   return fetch('https://25.javascript.pages.academy/keksobooking/data')
     .then((response) => {
       if (response.ok) {
         return response;
       }
-      //onError();
       throw new Error(`${response.status} — ${response.statusText}`);
     })
     .then((response) => response.json())
@@ -28,16 +26,12 @@ function sendFormData (form, onSuccess, onError) {
     },
   )
     .then((response) =>
-      //console.log(response.status);
-      //console.log(response.ok);
       response.json()
     )
     .then((data) => {
-      //console.log('Результат', data);
       onSuccess(data);
     })
     .catch((err) => {
-      //console.error(err);
       onError(err);
     });
 }

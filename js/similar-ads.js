@@ -1,9 +1,6 @@
-//import {createAdsData} from './data.js';
 
-//const mapContainer = document.querySelector('#map-canvas');
 const similarAdTemplate = document.querySelector('#card').content.querySelector('.popup');
-//const similarAds = createAdsData;
-//const similarListFragment = document.createDocumentFragment();
+
 const housingType = {
   flat: 'Квартира',
   bungalow: 'Бунгало',
@@ -51,7 +48,6 @@ function createAdPopup (ad){
     newElement.querySelector('.popup__text--time').remove();
   }
 
-  //здесь для эксперимента через try/catch
   const featuresContainer = newElement.querySelector('.popup__features');
   const features = featuresContainer.querySelectorAll('.popup__feature');
 
@@ -64,7 +60,6 @@ function createAdPopup (ad){
         feature.remove();
       }
     } catch (err) {
-      //console.log('Удобства не указаны', err.message, err.stack);
       feature.remove();
     }
   });
@@ -84,7 +79,7 @@ function createAdPopup (ad){
         offerPhotoList.appendChild(offerPhoto);
       }
     });
-    newElement.querySelector('.popup__photo:nth-of-type(1)').remove();// удаляем шаблонный тег img
+    newElement.querySelector('.popup__photo:nth-of-type(1)').remove();
   } else {
     newElement.querySelector('.popup__photos').remove();
   }
@@ -96,14 +91,6 @@ function createAdPopup (ad){
   }
   return newElement;
 }
-
-/*function createSimilarAds(){
-  similarAds.forEach((ad) => {
-    similarListFragment.appendChild(createAd(ad));
-  });
-
-  mapContainer.appendChild(similarListFragment);
-}*/
 
 
 export {createAdPopup};
