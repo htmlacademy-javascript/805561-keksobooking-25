@@ -1,4 +1,4 @@
-import {getPageInactive, getPageActive, getFilterActive} from './page-status.js';
+import {getPageActive, getFilterActive} from './page-status.js';
 //import {createAdsData} from './data.js';
 import {createAdPopup} from './similar-ads.js';
 import {getDataFromServer} from './network.js';
