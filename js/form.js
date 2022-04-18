@@ -1,7 +1,7 @@
 import {sendFormData} from './network.js';
-import {mapReset} from './map.js';
+import {mapReset, reRender} from './map.js';
 import {isEscapeKey} from './util.js';
-import {filterReset} from './filter.js';
+
 
 const form = document.querySelector('.ad-form');
 const pristine = new Pristine(form, {
@@ -108,11 +108,18 @@ form.addEventListener('submit', (evt) => {
   }
 });
 
+const filterForm = document.querySelector('.map__filters');
+function filterReset() {
+  filterForm.reset();
+  reRender();
+}
+
 function sendSuccessfulForm() {
   blockSubmitButton();
   openSuccessMessage();
   getInitialPageState();//возвращение формы и карты в исходное состояние при успешной отправке
   unblockSubmitButton ();
+  filterReset();
 }
 
 function sendUnsuccessfulForm() {

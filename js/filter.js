@@ -1,10 +1,4 @@
-import {clearMarkers, createMarkers} from './map.js';
-import {adsArrey} from './network.js';
-import {debounce, isNumberIntervalIncluded} from './util.js';
-
-debounce();//это для линтера, чтоб отстал
-// eslint-disable-next-line no-unused-vars
-const RERENDER_DELAY = 500;
+import {isNumberIntervalIncluded} from './util.js';
 
 const prise = {
   any: [0, 100000],
@@ -52,22 +46,9 @@ function compareAds (adA, adB)  {
   return rankB - rankA;
 }
 
-function onFilterChange() {
-  clearMarkers();
-  createMarkers(adsArrey.slice().sort(compareAds));
+function sortArrey(data) {
+  return data.slice().sort(compareAds);
 }
 
-filterForm.addEventListener('change', (evt)=> {
-  const target = evt.target;
-  if (target.tagName !== 'INPUT' && target.tagName !== 'SELECT' ) {return;}
 
-  onFilterChange();
-  //debounce(onFilterChange, RERENDER_DELAY);
-});
-
-function filterReset() {
-  filterForm.reset();
-  onFilterChange();
-}
-
-export {filterReset};
+export {sortArrey};

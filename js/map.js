@@ -2,20 +2,23 @@ import {getPageInactive, getPageActive, getFilterActive} from './page-status.js'
 //import {createAdsData} from './data.js';
 import {createAdPopup} from './similar-ads.js';
 import {getDataFromServer} from './network.js';
+import {debounce, errorMessage} from './util.js';
+import {sortArrey} from './filter.js';
 
 const SIMILAR_AD_COUNT = 10;
 const LATITUDE_INITIAL = 35.6895;
 const LONGITUDE_INITIAL = 139.692;
-const ALERT_SHOW_TIME = 7000;
+const RERENDER_DELAY = 500;
 
 const adressField = document.querySelector('#address');
-getPageInactive ();
+
 let map;
+let markerGroup;
 function createMap(){
   map = L.map('map-canvas')
     .on('load', () => {
       //getDataFromServer(createMarkers, errorMessage);
-      getDataFromServer(renderAds, errorMessage);
+      getDataFromServer(onAdsLoad, errorMessage);
       getPageActive();
       adressField.value = `широта: ${  LATITUDE_INITIAL  }, долгота: ${  LONGITUDE_INITIAL}`;
     })
@@ -30,8 +33,10 @@ function createMap(){
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors | Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>',
     },
   ).addTo(map);
+  markerGroup = L.layerGroup().addTo(map);
+
 }
-createMap();//вот где ее лучше вызвать - в main.js по событию загрузки страницы?
+
 
 let mainPinMarker;
 function createPinMarker() {
@@ -61,7 +66,6 @@ function createPinMarker() {
     //console.log(evt.target.getLatLng());
   });
 }
-createPinMarker();//вот где ее лучше вызвать - в main.js по событию загрузки страницы?
 
 const icon = L.icon({
   iconUrl: './img/pin.svg',
@@ -69,7 +73,6 @@ const icon = L.icon({
   iconAnchor: [20, 40],
 });
 
-const markerGroup = L.layerGroup().addTo(map);
 
 function createMarkers(adsData){
   adsData
@@ -91,52 +94,46 @@ function createMarkers(adsData){
     });
 }
 
-//сделать функцию, в которой будет вызываться сначала создание похожих объявлений(маркеров) createMarkers,
-// и только потом функция "разблокировать страницу", и эту общую передать в getDataFromServer вместо createMarkers
-function renderAds(adsData) {
-  //createPinMarker();
-  createMarkers(adsData);
-  getFilterActive();
-}
-
-
 //удаление слоя с метками
 function clearMarkers() {
   markerGroup.clearLayers();
 }
 
-//показать сообщение об ошибке, если при загрузке данных с сервера произошла ошибка запроса
-function errorMessage  () {
-  const alertContainer = document.createElement('div');
-  alertContainer.style.zIndex = '1000';
-  alertContainer.style.position = 'fixed';
-  alertContainer.style.width = '500px';
-  alertContainer.style.top = '100px';
-  alertContainer.style.left = '50%';
-  alertContainer.style.transform = 'translateX(-50%)';
-  alertContainer.style.padding = '50px 30px';
-  alertContainer.style.fontSize = '20px';
-  alertContainer.style.lineHeight = '26px';
-  alertContainer.style.textAlign = 'center';
-  alertContainer.style.backgroundColor = '#fff';
-  alertContainer.style.borderRadius = '10px';
-  alertContainer.textContent = 'При загрузке данных с сервера произошла ошибка, но вы можете опубликовать свое объявление :)';
+let adsArrey = [];
 
-  document.body.append(alertContainer);
-
-  setTimeout(() => {
-    alertContainer.remove();
-  }, ALERT_SHOW_TIME);
+function reRender() {
+  clearMarkers();
+  createMarkers(adsArrey);
 }
+
+//отрисовка маркеров и разблокирование фильтров
+function renderAds(data) {
+  createMarkers(data);
+  getFilterActive();
+}
+
+const filterForm = document.querySelector('.map__filters');
+
+function onAdsLoad(data) {
+  adsArrey = data;
+  renderAds(data);
+  const debounceFunction = debounce(onFilterChange, RERENDER_DELAY);
+  function onFilterChange(evt) {
+    const target = evt.target;
+    if (target.tagName !== 'INPUT' && target.tagName !== 'SELECT' ) {return;}
+    clearMarkers();
+    createMarkers(sortArrey(data));
+  }
+  filterForm.addEventListener('change', debounceFunction);
+}
+
 
 // возврат карты в исходное состояние с закрытием балуна,ой, перемудрила я..
 function mapReset(){
-  //перемещение метки в исходную точку по клику
   mainPinMarker.setLatLng({
     lat: LATITUDE_INITIAL,
     lng: LONGITUDE_INITIAL,
   });
-  //возвращение к начальным значениям масштаба и центра карты.
   map.setView({
     lat: LATITUDE_INITIAL,
     lng: LONGITUDE_INITIAL,
@@ -147,7 +144,6 @@ function mapReset(){
     lefletPopup.remove();
   }
   adressField.value = `широта: ${  LATITUDE_INITIAL  }, долгота: ${  LONGITUDE_INITIAL}`;
-  //console.log('карта приведена в исходный вид');
 }
 
-export {mapReset, clearMarkers, createMarkers, createMap};
+export {mapReset, clearMarkers, createMarkers, createMap, reRender, createPinMarker};
