@@ -1,6 +1,7 @@
 import {sendFormData} from './network.js';
 import {mapReset} from './map.js';
 import {isEscapeKey} from './util.js';
+import {filterReset} from './filter.js';
 
 const form = document.querySelector('.ad-form');
 const pristine = new Pristine(form, {
@@ -113,6 +114,7 @@ function sendSuccessfulForm() {
   getInitialPageState();//возвращение формы и карты в исходное состояние при успешной отправке
   unblockSubmitButton ();
 }
+
 function sendUnsuccessfulForm() {
   blockSubmitButton();
   openErrorMessage();
@@ -133,6 +135,7 @@ function unblockSubmitButton () {
 //При успешной отправке формы или её очистке (нажатие на кнопку .ad-form__reset) страница, не перезагружаясь, переходит в  исходное состояние
 const sliderElement = document.querySelector('.ad-form__slider');
 const valueElement = document.querySelector('#price');
+
 function getInitialPageState(){
   form.reset();
   setTimeout(() => {
@@ -146,6 +149,7 @@ function getInitialPageState(){
     sliderElement.noUiSlider.set(Number(valueElement.min));
   }, 500);
   //фильтрация (состояние фильтров и отфильтрованные метки) сбрасывается - сделать позже, росле фильтров
+  filterReset();
 }
 
 // при успешной отправке формы выводится сообщение #success

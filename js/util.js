@@ -39,4 +39,17 @@ function isEscapeKey(evt) {
   return evt.key === 'Escape';
 }
 
-export {getRandomFractionalNumber, getRandomInteger, getArrayRandomElement, getArrayRandomElements, boolean, isEscapeKey};
+//функция для определения, входит ли число в заданный интервал
+function isNumberIntervalIncluded (min, max, number) {
+  return number < max && number > min;
+}
+
+const debounce = (callback, timeoutDelay) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
+
+export {getRandomFractionalNumber, getRandomInteger, getArrayRandomElement, getArrayRandomElements, boolean, isEscapeKey, isNumberIntervalIncluded, debounce};

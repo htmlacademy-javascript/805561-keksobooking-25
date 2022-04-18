@@ -13,6 +13,9 @@ function getPageActive () {
     formFieldset.disabled = false;
   });
   slider.removeAttribute('disabled');
+}
+
+function getFilterActive() {
   filter.classList.remove('map__filters--disabled');
   filterSelects .forEach((filterSelect) => {
     filterSelect.disabled = false;
@@ -34,4 +37,4 @@ function getPageInactive () {
 }
 //getPageInactive ();
 
-export {getPageInactive, getPageActive};
+export {getPageInactive, getPageActive, getFilterActive};
