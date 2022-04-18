@@ -137,8 +137,10 @@ const valueElement = document.querySelector('#price');
 function getInitialPageState(){
   const previewAvatar = document.querySelector('.ad-form-header__preview img');
   const previewAdFoto = document.querySelector('.ad-form__photo img');
-  if(previewAvatar || previewAdFoto){
+  if(previewAvatar){
     previewAvatar.src = 'img/muffin-grey.svg';
+  }
+  if (previewAdFoto){
     previewAdFoto.remove();
   }
 
