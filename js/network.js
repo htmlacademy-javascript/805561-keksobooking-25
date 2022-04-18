@@ -1,3 +1,4 @@
+
 function getDataFromServer(onSuccess, onError){
   return fetch('https://25.javascript.pages.academy/keksobooking/data')
     .then((response) => {
@@ -9,12 +10,10 @@ function getDataFromServer(onSuccess, onError){
     })
     .then((response) => response.json())
     .then((data) => {
-      //console.log('Результат', data);
       onSuccess(data);
     })
     .catch(() => {
-      onError();//показать сообщение об ошибке (сваять) , если при загрузке данных с сервера произошла ошибка запроса
-      //console.log(error);
+      onError();
     });
 }
 
@@ -43,5 +42,4 @@ function sendFormData (form, onSuccess, onError) {
     });
 }
 
-
-export {getDataFromServer, sendFormData};
+export {getDataFromServer, sendFormData };
