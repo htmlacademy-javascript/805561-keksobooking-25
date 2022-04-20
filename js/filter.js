@@ -39,17 +39,17 @@ function getFeaturesAccordance(ad, housingFeatures) {
 }
 
 function getFilterAd (ad)  {
-  const housingType = filterFormElement.querySelector('#housing-type');
-  const housingPrice = filterFormElement.querySelector('#housing-price');
-  const housingRooms = filterFormElement.querySelector('#housing-rooms');
-  const housingGuests = filterFormElement.querySelector('#housing-guests');
-  const housingFeatures = filterFormElement.querySelectorAll('[name="features"]:checked');
+  const housingTypeElement = filterFormElement.querySelector('#housing-type');
+  const housingPriceElement = filterFormElement.querySelector('#housing-price');
+  const housingRoomsElement = filterFormElement.querySelector('#housing-rooms');
+  const housingGuestsElement = filterFormElement.querySelector('#housing-guests');
+  const housingFeaturesElement = filterFormElement.querySelectorAll('[name="features"]:checked');
 
-  return  (ad.offer.type && getHousingTypeAccordance(ad, housingType))
-      && (ad.offer.price && getHousingPriceAccordance(ad, housingPrice))
-      && (ad.offer.rooms && getHousingRoomsAccordance(ad, housingRooms))
-      && (ad.offer.guests && getHousingGuestsAccordance(ad, housingGuests))
-      && (ad.offer.features && getFeaturesAccordance(ad, housingFeatures));
+  return  (ad.offer.type && getHousingTypeAccordance(ad, housingTypeElement))
+      && (ad.offer.price && getHousingPriceAccordance(ad, housingPriceElement))
+      && (ad.offer.rooms && getHousingRoomsAccordance(ad, housingRoomsElement))
+      && (ad.offer.guests && getHousingGuestsAccordance(ad, housingGuestsElement))
+      && (ad.offer.features && getFeaturesAccordance(ad, housingFeaturesElement));
 }
 
 function filterArray(data) {
