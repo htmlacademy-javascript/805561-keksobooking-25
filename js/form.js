@@ -2,8 +2,20 @@ import {sendFormData} from './network.js';
 import {mapReset, reRender} from './map.js';
 import {isEscapeKey} from './util.js';
 
-const form = document.querySelector('.ad-form');
-const pristine = new Pristine(form, {
+const PRICE_MAX_VALUE = 100000;
+const TIMEOUT_VALUE = 500;
+const PRICE_MIN_VALUE = 0;
+
+const MinPrice = {
+  'bungalow': 0,
+  'flat': 1000,
+  'hotel': 3000,
+  'house': 5000,
+  'palace': 10000
+};
+
+const formElement = document.querySelector('.ad-form');
+const pristine = new Pristine(formElement, {
   classTo: 'validate-element',
   errorTextParent: 'validate-element',
   errorClass: 'form__element--invalid',
@@ -12,98 +24,102 @@ const pristine = new Pristine(form, {
   errorTextClass: 'form__error-text'
 });
 
-const roomNumberField = form.querySelector('[name="rooms"]');
-const capacityField = form.querySelector('[name="capacity"]');
+const roomNumberFieldElement = formElement.querySelector('[name="rooms"]');
+const capacityFieldElement = formElement.querySelector('[name="capacity"]');
 
 function validateCapacity () {
-  return  capacityField.value === '0' ? roomNumberField.value === '100': roomNumberField.value >= capacityField.value && roomNumberField.value <= 3;
+  return  capacityFieldElement.value === '0' ? roomNumberFieldElement.value === '100': roomNumberFieldElement.value >= capacityFieldElement.value && roomNumberFieldElement.value <= 3;
 }
 
 function getCapacityErrorMessage () {
-  if (capacityField.value === '0') {
+  if (capacityFieldElement.value === '0') {
     return 'Не для гостей 100 комнат ';
   }
-  if (roomNumberField.value === '100') {
+  if (roomNumberFieldElement.value === '100') {
     return '100 комнат - не для гостей';
   }
   return 'Гостей больше, чем комнат';
 }
 
-pristine.addValidator(roomNumberField, validateCapacity, getCapacityErrorMessage);
-pristine.addValidator(capacityField, validateCapacity, getCapacityErrorMessage);
+pristine.addValidator(roomNumberFieldElement, validateCapacity, getCapacityErrorMessage);
+pristine.addValidator(capacityFieldElement, validateCapacity, getCapacityErrorMessage);
 
 function onRoomNumberChange () {
-  pristine.validate(capacityField);
-  capacityField.nextElementSibling.textContent = '';
+  pristine.validate(capacityFieldElement);
+  capacityFieldElement.nextElementSibling.textContent = '';
 }
 function onCapacityChange () {
-  pristine.validate(roomNumberField);
-  roomNumberField.nextElementSibling.textContent = '';
+  pristine.validate(roomNumberFieldElement);
+  roomNumberFieldElement.nextElementSibling.textContent = '';
 }
 
-roomNumberField.addEventListener('change', onRoomNumberChange);
-capacityField.addEventListener('change', onCapacityChange);
+roomNumberFieldElement.addEventListener('change', onRoomNumberChange);
+capacityFieldElement.addEventListener('change', onCapacityChange);
 
-const priceField = form.querySelector('#price');
-const typeField = form.querySelector('#type');
-const minPrice = {
-  'bungalow': 0,
-  'flat': 1000,
-  'hotel': 3000,
-  'house': 5000,
-  'palace': 10000
-};
+const priceFieldElement = formElement.querySelector('#price');
+const typeFieldElement = formElement.querySelector('#type');
+
 
 function onTypeFieldInput(){
   const type = this.value;
-  priceField.min = minPrice[type];
-  priceField.placeholder = minPrice[type];
-  pristine.validate(priceField);
+  priceFieldElement.min = MinPrice[type];
+  priceFieldElement.placeholder = MinPrice[type];
+  setTimeout(() => {
+    pristine.validate(priceFieldElement);
+  }, TIMEOUT_VALUE);
 }
 
-typeField.addEventListener('input', onTypeFieldInput);
+typeFieldElement.addEventListener('input', onTypeFieldInput);
 
-function validatePrice (value) {
-  return value >= minPrice[typeField.value];
+function validatePrice () {
+  return priceFieldElement.value >= MinPrice[typeFieldElement.value];
 }
 
 function getPriceErrorMessage () {
-  return `Не менее ${minPrice[typeField.value]} руб. за ночь`;
+  return `Не менее ${MinPrice[typeFieldElement.value]} руб. за ночь`;
 }
 
-pristine.addValidator(priceField, validatePrice, getPriceErrorMessage);
+pristine.addValidator(priceFieldElement, validatePrice, getPriceErrorMessage);
 
-const timeinField = form.querySelector('#timein');
-const timeoutField = form.querySelector('#timeout');
+const timeinFieldElement = formElement.querySelector('#timein');
+const timeoutFieldElement = formElement.querySelector('#timeout');
 
 function onTimeinFieldInput () {
-  timeoutField.value = this.value;
+  timeoutFieldElement.value = this.value;
 }
 
 function onTimeoutFieldInput () {
-  timeinField.value = this.value;
+  timeinFieldElement.value = this.value;
 }
 
-timeinField.addEventListener('input', onTimeinFieldInput);
-timeoutField.addEventListener('input', onTimeoutFieldInput);
+timeinFieldElement.addEventListener('input', onTimeinFieldInput);
+timeoutFieldElement.addEventListener('input', onTimeoutFieldInput);
 
-const resetButton = document.querySelector('.ad-form__reset');
-resetButton.addEventListener('click', () => {
+const resetButtonElement = document.querySelector('.ad-form__reset');
+resetButtonElement.addEventListener('click', () => {
   getInitialPageState();
+  pristine.validate(priceFieldElement);
 });
 
-form.addEventListener('submit', (evt) => {
+formElement.addEventListener('submit', (evt) => {
   evt.preventDefault();
   pristine.validate();
   const isValid = pristine.validate();
   if (isValid) {
-    sendFormData(form, sendSuccessfulForm, sendUnsuccessfulForm);  }
+    sendFormData(formElement, sendSuccessfulForm, sendUnsuccessfulForm);
+  }
 });
 
-const filterForm = document.querySelector('.map__filters');
+const filterFormElement = document.querySelector('.map__filters');
 function filterReset() {
-  filterForm.reset();
+  filterFormElement.reset();
   reRender();
+}
+
+function formReset() {
+  priceFieldElement.min = PRICE_MIN_VALUE;
+  priceFieldElement.placeholder = PRICE_MIN_VALUE;
+  formElement.reset();
 }
 
 function sendSuccessfulForm() {
@@ -111,7 +127,6 @@ function sendSuccessfulForm() {
   openSuccessMessage();
   getInitialPageState();
   unblockSubmitButton ();
-  filterReset();
 }
 
 function sendUnsuccessfulForm() {
@@ -120,80 +135,78 @@ function sendUnsuccessfulForm() {
   unblockSubmitButton ();
 }
 
-const submitButton = form.querySelector('.ad-form__submit');
+const submitButtonElement = formElement.querySelector('.ad-form__submit');
 function blockSubmitButton ()  {
-  submitButton.disabled = true;
-  submitButton.textContent = 'Отправка';
+  submitButtonElement.disabled = true;
+  submitButtonElement.textContent = 'Отправка';
 }
 
 function unblockSubmitButton () {
-  submitButton.disabled = false;
-  submitButton.textContent = 'Опубликовать';
+  submitButtonElement.disabled = false;
+  submitButtonElement.textContent = 'Опубликовать';
 }
 
 const sliderElement = document.querySelector('.ad-form__slider');
-const valueElement = document.querySelector('#price');
 
 function getInitialPageState(){
-  const previewAvatar = document.querySelector('.ad-form-header__preview img');
-  const previewAdFoto = document.querySelector('.ad-form__photo img');
-  if (previewAvatar){
-    previewAvatar.src = 'img/muffin-grey.svg';
+  const previewAvatarElement = document.querySelector('.ad-form-header__preview img');
+  const previewAdFotoElement = document.querySelector('.ad-form__photo img');
+  if (previewAvatarElement){
+    previewAvatarElement.src = 'img/muffin-grey.svg';
   }
-  if (previewAdFoto){
-    previewAdFoto.remove();
+  if (previewAdFotoElement){
+    previewAdFotoElement.remove();
   }
-  form.reset();
+  filterReset();
+  formReset();
+  sliderElement.noUiSlider.updateOptions({
+    range: {
+      min: PRICE_MIN_VALUE,
+      max: PRICE_MAX_VALUE,
+    },
+  });
+  sliderElement.noUiSlider.set(PRICE_MIN_VALUE);
   setTimeout(() => {
     mapReset();
-    sliderElement.noUiSlider.updateOptions({
-      range: {
-        min: Number(valueElement.min),
-        max: 100000,
-      },
-    });
-    sliderElement.noUiSlider.set(Number(valueElement.min));
-  }, 500);
-
-  filterReset();
+  }, TIMEOUT_VALUE);
 }
 
-const  successPopupTemplate = document.querySelector('#success').content.querySelector('.success');
+const  successPopupTemplateElement = document.querySelector('#success').content.querySelector('.success');
 function openSuccessMessage() {
-  const newElement = successPopupTemplate.cloneNode(true);
+  const newElement = successPopupTemplateElement.cloneNode(true);
   document.body.append(newElement);
 
-  document.addEventListener('keydown', closeSuccessMessage);
-  document.addEventListener('click', closeSuccessMessage);
+  document.addEventListener('keydown', onSuccessMessageClose);
+  document.addEventListener('click', onSuccessMessageClose);
 }
 
-function closeSuccessMessage(evt) {
-  const successPopup = document.querySelector('.success');
+function onSuccessMessageClose(evt) {
+  const successPopupElement = document.querySelector('.success');
   if (isEscapeKey(evt)) {
     evt.preventDefault();
   }
-  successPopup.remove();
-  document.removeEventListener('keydown', closeSuccessMessage);
-  document.removeEventListener('click', closeSuccessMessage);
+  successPopupElement.remove();
+  document.removeEventListener('keydown', onSuccessMessageClose);
+  document.removeEventListener('click', onSuccessMessageClose);
 }
 
-const  errorPopupTemplate = document.querySelector('#error').content.querySelector('.error');
+const  errorPopupTemplateElement = document.querySelector('#error').content.querySelector('.error');
 function openErrorMessage() {
-  const newElement = errorPopupTemplate.cloneNode(true);
+  const newElement = errorPopupTemplateElement.cloneNode(true);
   document.body.append(newElement);
 
-  document.addEventListener('keydown', closeErrorMessage);
-  document.addEventListener('click', closeErrorMessage);
+  document.addEventListener('keydown', onErrorMessageClose);
+  document.addEventListener('click', onErrorMessageClose);
 }
 
-function closeErrorMessage(evt) {
-  const errorPopup = document.querySelector('.error');
+function onErrorMessageClose(evt) {
+  const errorPopupElement = document.querySelector('.error');
   if (isEscapeKey(evt)) {
     evt.preventDefault();
   }
-  errorPopup.remove();
-  document.removeEventListener('keydown', closeErrorMessage);
-  document.removeEventListener('click', closeErrorMessage);
+  errorPopupElement.remove();
+  document.removeEventListener('keydown', onErrorMessageClose);
+  document.removeEventListener('click', onErrorMessageClose);
 }
 
 

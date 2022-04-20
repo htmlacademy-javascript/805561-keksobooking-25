@@ -1,53 +1,60 @@
 import {isNumberIntervalIncluded} from './util.js';
 
-const prise = {
+const Price = {
   any: [0, 100000],
   low: [0, 9999],
   middle: [10000, 50000],
   high: [50001, 100000]
 };
 
-const filterForm = document.querySelector('.map__filters');
+const filterFormElement = document.querySelector('.map__filters');
 
-function getAdRank (ad)  {
-  const housingType = filterForm.querySelector('#housing-type');
-  const housingPrice = filterForm.querySelector('#housing-price');
-  const housingRooms = filterForm.querySelector('#housing-rooms');
-  const housingGuests = filterForm.querySelector('#housing-guests');
-  const housingFeatures = filterForm.querySelectorAll('[name="features"]:checked');
-  let rank = 0;
-  if (ad.offer.type && (housingType.value === 'any' || ad.offer.type === housingType.value)) {
-    rank += 1;
-  }
-  if (ad.offer.price && isNumberIntervalIncluded(...prise[housingPrice.value], ad.offer.price)) {
-    rank += 1;
-  }
-  if (ad.offer.rooms && (housingRooms.value === 'any' || ad.offer.rooms === Number(housingRooms.value))) {
-    rank += 1;
-  }
-  if (ad.offer.guests && (housingGuests.value === 'any' || ad.offer.guests === Number(housingGuests.value))) {
-    rank += 1;
-  }
-  if (ad.offer.features) {
-    housingFeatures.forEach((el) => {
-      if (ad.offer.features.some((feature) =>  feature === el.value)) {
-        rank += 1;
+function getHousingTypeAccordance(ad, typeHousing) {
+  return typeHousing.value === 'any' || ad.offer.type === typeHousing.value;
+}
+
+function getHousingPriceAccordance(ad, priceHousing) {
+  return isNumberIntervalIncluded(...Price[priceHousing.value], ad.offer.price);
+}
+
+function getHousingRoomsAccordance(ad, roomsHousing) {
+  return roomsHousing.value === 'any' || ad.offer.rooms === Number(roomsHousing.value);
+}
+
+function getHousingGuestsAccordance(ad, guestsHousing) {
+  return guestsHousing.value === 'any' || ad.offer.guests === Number(guestsHousing.value);
+}
+
+function getFeaturesAccordance(ad, housingFeatures) {
+  let boolean = true;
+  housingFeatures.forEach((el)=> {
+    if(ad.offer.features) {
+      const accordance = ad.offer.features.some((feature) => feature === el.value);
+      if (!accordance) {
+        boolean = false;
       }
-    });
-  }
-  return rank;
+    }
+  });
+  return boolean;
 }
 
-function compareAds (adA, adB)  {
-  const rankA = getAdRank(adA);
-  const rankB = getAdRank(adB);
+function getFilterAd (ad)  {
+  const housingType = filterFormElement.querySelector('#housing-type');
+  const housingPrice = filterFormElement.querySelector('#housing-price');
+  const housingRooms = filterFormElement.querySelector('#housing-rooms');
+  const housingGuests = filterFormElement.querySelector('#housing-guests');
+  const housingFeatures = filterFormElement.querySelectorAll('[name="features"]:checked');
 
-  return rankB - rankA;
+  return  (ad.offer.type && getHousingTypeAccordance(ad, housingType))
+      && (ad.offer.price && getHousingPriceAccordance(ad, housingPrice))
+      && (ad.offer.rooms && getHousingRoomsAccordance(ad, housingRooms))
+      && (ad.offer.guests && getHousingGuestsAccordance(ad, housingGuests))
+      && (ad.offer.features && getFeaturesAccordance(ad, housingFeatures));
 }
 
-function sortArrey(data) {
-  return data.slice().sort(compareAds);
+function filterArray(data) {
+  return data.filter(getFilterAd);
 }
 
 
-export {sortArrey};
+export {filterArray};

@@ -2,14 +2,16 @@ const sliderElement = document.querySelector('.ad-form__slider');
 const valueElement = document.querySelector('#price');
 const associatedElement = document.querySelector('#type');
 
-valueElement.value = Number(valueElement.min);
+const PRICE_MAX_VALUE = 100000;
+const PRICE_MIN_VALUE = 0;
+
 function createSlider() {
   noUiSlider.create(sliderElement, {
     range: {
-      min: 0,
-      max: 100000,
+      min: PRICE_MIN_VALUE,
+      max: PRICE_MAX_VALUE,
     },
-    start: 1000,
+    start: PRICE_MIN_VALUE,
     step: 1,
     connect: 'lower',
     format: {
@@ -30,7 +32,7 @@ function createSlider() {
     sliderElement.noUiSlider.updateOptions({
       range: {
         min: Number(valueElement.min),
-        max: 100000,
+        max: PRICE_MAX_VALUE,
       },
     });
     sliderElement.noUiSlider.set(Number(valueElement.min));
