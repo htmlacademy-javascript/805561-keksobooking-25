@@ -1,10 +1,10 @@
 const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
-const fileChooserAvatar = document.querySelector('.ad-form__field input[type=file]');
-const previewAvatar = document.querySelector('.ad-form-header__preview img');
+const fileChooserAvatarElement = document.querySelector('.ad-form__field input[type=file]');
+const previewAvatarElement = document.querySelector('.ad-form-header__preview img');
 
-const fileChooserAdFoto = document.querySelector('.ad-form__upload input[type=file]');
-const previewAdFotoContainer = document.querySelector('.ad-form__photo');
+const fileChooserAdFotoElement = document.querySelector('.ad-form__upload input[type=file]');
+const previewAdFotoElement = document.querySelector('.ad-form__photo');
 
 function addFoto (fileChooser, preview ) {
   const file = fileChooser.files[0];
@@ -17,13 +17,13 @@ function addFoto (fileChooser, preview ) {
   }
 }
 
-fileChooserAvatar.addEventListener('change', () => {
-  addFoto(fileChooserAvatar, previewAvatar);
+fileChooserAvatarElement.addEventListener('change', () => {
+  addFoto(fileChooserAvatarElement, previewAvatarElement);
 });
 
-fileChooserAdFoto.addEventListener('change', () => {
+fileChooserAdFotoElement.addEventListener('change', () => {
   const previewAdFoto = document.createElement('img');
   previewAdFoto.style.maxHeight = '100%';
-  addFoto(fileChooserAdFoto, previewAdFoto);
-  previewAdFotoContainer.append(previewAdFoto);
+  addFoto(fileChooserAdFotoElement, previewAdFoto);
+  previewAdFotoElement.append(previewAdFoto);
 });

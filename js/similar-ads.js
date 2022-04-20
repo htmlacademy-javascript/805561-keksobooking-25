@@ -1,7 +1,4 @@
-
-const similarAdTemplate = document.querySelector('#card').content.querySelector('.popup');
-
-const housingType = {
+const HousingTypeAccordance = {
   flat: 'Квартира',
   bungalow: 'Бунгало',
   house: 'Дом',
@@ -9,8 +6,10 @@ const housingType = {
   hotel: 'Отель',
 };
 
+const similarAdTemplateElement = document.querySelector('#card').content.querySelector('.popup');
+
 function createAdPopup (ad){
-  const newElement = similarAdTemplate.cloneNode(true);
+  const newElement = similarAdTemplateElement.cloneNode(true);
 
   if (ad.offer.title) {
     newElement.querySelector('.popup__title').textContent = ad.offer.title;
@@ -31,7 +30,7 @@ function createAdPopup (ad){
   }
 
   if (ad.offer.type) {
-    newElement.querySelector('.popup__type').textContent = housingType[ad.offer.type];
+    newElement.querySelector('.popup__type').textContent = HousingTypeAccordance[ad.offer.type];
   } else {
     newElement.querySelector('.popup__type').remove();
   }

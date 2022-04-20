@@ -1,39 +1,39 @@
-const form = document.querySelector('.ad-form');
-const formFieldsets = form.querySelectorAll('fieldset');
-const slider = form.querySelector('.ad-form__slider');
+const formElement = document.querySelector('.ad-form');
+const formFieldsetElements = formElement.querySelectorAll('fieldset');
+const sliderElement = formElement.querySelector('.ad-form__slider');
 
-const filter = document.querySelector('.map__filters');
-const filterSelects = filter.querySelectorAll('.map__filter');
-const filterFieldset = filter.querySelector('.map__features');
+const filterElement = document.querySelector('.map__filters');
+const filterSelectElements = filterElement.querySelectorAll('.map__filter');
+const filterFeaturesElement = filterElement.querySelector('.map__features');
 
 
 function getPageActive () {
-  form.classList.remove('ad-form--disabled');
-  formFieldsets .forEach((formFieldset) => {
+  formElement.classList.remove('ad-form--disabled');
+  formFieldsetElements .forEach((formFieldset) => {
     formFieldset.disabled = false;
   });
-  slider.removeAttribute('disabled');
+  sliderElement.disabled = false;
 }
 
 function getFilterActive() {
-  filter.classList.remove('map__filters--disabled');
-  filterSelects .forEach((filterSelect) => {
+  filterElement.classList.remove('map__filters--disabled');
+  filterSelectElements .forEach((filterSelect) => {
     filterSelect.disabled = false;
   });
-  filterFieldset.disabled = false;
+  filterFeaturesElement.disabled = false;
 }
 
 function getPageInactive () {
-  form.classList.add('ad-form--disabled');
-  formFieldsets .forEach((formFieldset) => {
+  formElement.classList.add('ad-form--disabled');
+  formFieldsetElements .forEach((formFieldset) => {
     formFieldset.disabled = true;
   });
-  slider.setAttribute('disabled', true);
-  filter.classList.add('map__filters--disabled');
-  filterSelects .forEach((filterSelect) => {
+  sliderElement.disabled = true;
+  filterElement.classList.add('map__filters--disabled');
+  filterSelectElements .forEach((filterSelect) => {
     filterSelect.disabled = true;
   });
-  filterFieldset.disabled = true;
+  filterFeaturesElement.disabled = true;
 }
 
 export {getPageInactive, getPageActive, getFilterActive};

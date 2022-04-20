@@ -2,14 +2,16 @@ import {getPageActive, getFilterActive} from './page-status.js';
 import {createAdPopup} from './similar-ads.js';
 import {getDataFromServer} from './network.js';
 import {debounce, errorMessage} from './util.js';
-import {sortArrey} from './filter.js';
+import {filterArray} from './filter.js';
 
 const SIMILAR_AD_COUNT = 10;
 const LATITUDE_INITIAL = 35.6895;
 const LONGITUDE_INITIAL = 139.692;
 const RERENDER_DELAY = 500;
+const MAP_SCALE = 12;
 
-const adressField = document.querySelector('#address');
+
+const adressFieldElement = document.querySelector('#address');
 
 let map;
 let markerGroup;
@@ -18,12 +20,12 @@ function createMap(){
     .on('load', () => {
       getDataFromServer(onAdsLoad, errorMessage);
       getPageActive();
-      adressField.value = `широта: ${  LATITUDE_INITIAL  }, долгота: ${  LONGITUDE_INITIAL}`;
+      adressFieldElement.value = `широта: ${  LATITUDE_INITIAL  }, долгота: ${  LONGITUDE_INITIAL}`;
     })
     .setView({
       lat: LATITUDE_INITIAL,
       lng: LONGITUDE_INITIAL,
-    }, 12);
+    }, MAP_SCALE);
 
   L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -60,7 +62,7 @@ function createPinMarker() {
   mainPinMarker.on('moveend', (evt) => {
     const latitude =  evt.target.getLatLng().lat.toFixed(numberSymbols);
     const longitude = evt.target.getLatLng().lng.toFixed(numberSymbols);
-    adressField.value = `широта: ${  latitude  }, долгота: ${  longitude}`;
+    adressFieldElement.value = `широта: ${  latitude  }, долгота: ${  longitude}`;
   });
 }
 
@@ -95,11 +97,11 @@ function clearMarkers() {
   markerGroup.clearLayers();
 }
 
-let adsArrey = [];
+let adsArray = [];
 
 function reRender() {
   clearMarkers();
-  createMarkers(adsArrey);
+  createMarkers(adsArray);
 }
 
 function renderAds(data) {
@@ -107,19 +109,19 @@ function renderAds(data) {
   getFilterActive();
 }
 
-const filterForm = document.querySelector('.map__filters');
+const filterFormElement = document.querySelector('.map__filters');
 
 function onAdsLoad(data) {
-  adsArrey = data;
+  adsArray = data;
   renderAds(data);
   const debounceFunction = debounce(onFilterChange, RERENDER_DELAY);
   function onFilterChange(evt) {
     const target = evt.target;
     if (target.tagName !== 'INPUT' && target.tagName !== 'SELECT' ) {return;}
     clearMarkers();
-    createMarkers(sortArrey(data));
+    createMarkers(filterArray(data));
   }
-  filterForm.addEventListener('change', debounceFunction);
+  filterFormElement.addEventListener('change', debounceFunction);
 }
 
 
@@ -131,13 +133,13 @@ function mapReset(){
   map.setView({
     lat: LATITUDE_INITIAL,
     lng: LONGITUDE_INITIAL,
-  }, 12);
+  }, MAP_SCALE);
 
   const lefletPopup = document.querySelector ('.leaflet-popup');
   if(lefletPopup){
     lefletPopup.remove();
   }
-  adressField.value = `широта: ${  LATITUDE_INITIAL  }, долгота: ${  LONGITUDE_INITIAL}`;
+  adressFieldElement.value = `широта: ${  LATITUDE_INITIAL  }, долгота: ${  LONGITUDE_INITIAL}`;
 }
 
 export {mapReset, clearMarkers, createMarkers, createMap, reRender, createPinMarker};
